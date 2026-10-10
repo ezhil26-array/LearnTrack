@@ -36,7 +36,18 @@ public class Student extends Person{
     }
 
     @Override
-    String getDisplayName() {
+    public String getDisplayName() {
         return "Student: " + getFirstName() + " " + getLastName();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        Student student = (Student) obj;
+        return this.getId() == student.getId();
+    }
+
+    @Override
+    public String toString() {
+        return getId() + " " + getFirstName() + " " + getLastName() + " " + getEmail() + " " + getBatch();
     }
 }
