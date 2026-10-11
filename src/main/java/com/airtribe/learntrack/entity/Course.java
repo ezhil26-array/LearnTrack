@@ -24,6 +24,10 @@ public class Course {
         this.active = active;
     }
 
+    public Course(long id) {
+        this.id = id;
+    }
+
     public long getId() {
         return id;
     }
@@ -62,5 +66,20 @@ public class Course {
 
     public void setActive(boolean active) {
         this.active = active;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof Course) {
+            Course course = (Course) obj;
+            if (this.id == course.getId()) return true;
+            return this.courseName.equalsIgnoreCase(course.getCourseName());
+        }
+        return false;
+    }
+
+    @Override
+    public String toString() {
+        return getId() + " " +getCourseName() + " " + getDescription() + " " + getDurationInWeeks() +" weeks";
     }
 }

@@ -14,6 +14,10 @@ public abstract class Person {
         this.email = email;
     }
 
+    public Person() {
+
+    }
+
     abstract String getDisplayName();
 
     public long getId() {

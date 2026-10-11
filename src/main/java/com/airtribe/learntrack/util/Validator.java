@@ -19,4 +19,15 @@ public class Validator {
         }
         return isValid;
     }
+
+    public static boolean validateNumber(String durationInWeeks) {
+        boolean isValid = false;
+        try {
+            Integer durationInWeek = Integer.parseInt(durationInWeeks);
+            isValid = true;
+        } catch (NumberFormatException e) {
+            System.out.print("Please enter the valid number for duration in weeks.");
+        }
+        return isValid;
+    }
 }
