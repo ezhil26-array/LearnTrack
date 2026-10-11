@@ -1,46 +1,62 @@
 package com.airtribe.learntrack.service;
 
+import com.airtribe.learntrack.component.LearnTrackComponent;
 import com.airtribe.learntrack.entity.Student;
 import com.airtribe.learntrack.exception.StudentNotFoundException;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
-public class StudentService {
 
-    private static List<Student> students =  new ArrayList<Student>();
+public class StudentService implements LearnTrackService<Student> {
 
-    public static void addStudent(Student student) {
-        students.add(student);
+    private final LearnTrackComponent learnTrackComponent;
+
+    public StudentService(LearnTrackComponent learnTrackComponent) {
+        this.learnTrackComponent = learnTrackComponent;
     }
-    public static Student getStudent(long id) throws StudentNotFoundException {
-        Student student = students.stream().filter(Student::isActive).filter(s -> s.getId() == id).findFirst().orElse(null);
-        if (student == null) {
+
+    public List<Student> getStudents() {
+        return learnTrackComponent.getStudents();
+    }
+
+    public String add(Student student) {
+        learnTrackComponent.update(student);
+        return "Student added successfully.";
+    }
+
+    public Student get(Student student) throws StudentNotFoundException {
+        Student existingStudent = getStudents().stream()
+                .filter(Student::isActive)
+                .filter(s -> s.getId() == student.getId()).findFirst().orElse(null);
+        if (existingStudent == null) {
             throw new StudentNotFoundException();
         }
-        return student;
+        return existingStudent;
     }
 
-    public static void updateStudent(Student student) {
-        students.remove(student);
-        students.add(student);
+    @Override
+    public Student get(long id) throws Exception {
+        return get(new Student(id));
     }
 
-    public static List<Student> getList() {
-        List<Student> activeStudents = students.stream().filter(Student::isActive).toList();
+    public String update(Student student) {
+        learnTrackComponent.update(student);
+        return "Student updated.";
+    }
+
+    public List<Student> getList(Student student) {
+        List<Student> activeStudents = getStudents().stream().filter(Student::isActive).toList();
         return Collections.unmodifiableList(activeStudents);
     }
 
-    public static String removeStudent(long id) {
-        Student student = null;
+    public String remove(Student student) {
         String message = "";
         try {
-            student = getStudent(id);
+            student = get(student);
             student.setActive(false);
-            message = student.getDisplayName() + " removed successfully.";
+            message = "Student "+student.getDisplayName() + " removed successfully.";
         } catch (StudentNotFoundException e) {
             message = "Student not found.";
         }

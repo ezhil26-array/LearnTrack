@@ -3,8 +3,8 @@ package com.airtribe.learntrack.util;
 public class IdGenerator {
 
     private static long uniqueStudentId = 1000;
-    private static long uniqueCourseId = 1000;
-    private static long uniqueEnrollmentId = 1000;
+    private static long uniqueCourseId = 100;
+    private static long uniqueEnrollmentId = 10000;
 
     public synchronized static long getNextStudentId() {
         return uniqueStudentId++;

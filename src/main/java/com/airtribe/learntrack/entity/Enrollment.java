@@ -8,33 +8,48 @@ public class Enrollment {
 
     // Fields: id, studentId, courseId, enrollmentDate, status
 
-    private int id;
-    private int courseId;
-    private int studentId;
+    private long id;
+    private long courseId;
+    private long studentId;
     private Date enrollmentDate;
     private EnrollmentStatus status;
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
+    public Enrollment(long id) {
         this.id = id;
     }
-
-    public int getCourseId() {
-        return courseId;
+    public Enrollment(long studentId, long courseId, EnrollmentStatus active) {
+        this.studentId = studentId;
+        this.courseId = courseId;
+        this.status = active;
+        this.enrollmentDate = new Date();
     }
 
-    public void setCourseId(int courseId) {
+    public Enrollment(long studentId, long courseId) {
+        this.studentId = studentId;
         this.courseId = courseId;
     }
 
-    public int getStudentId() {
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public long getCourseId() {
+        return courseId;
+    }
+
+    public void setCourseId(long courseId) {
+        this.courseId = courseId;
+    }
+
+    public long getStudentId() {
         return studentId;
     }
 
-    public void setStudentId(int studentId) {
+    public void setStudentId(long studentId) {
         this.studentId = studentId;
     }
 
@@ -52,5 +67,10 @@ public class Enrollment {
 
     public void setStatus(EnrollmentStatus status) {
         this.status = status;
+    }
+
+    @Override
+    public String toString() {
+        return this.getId() + " " +this.getCourseId() + " " +this.getStudentId()+ " " +this.getEnrollmentDate() + " " +this.getStatus();
     }
 }

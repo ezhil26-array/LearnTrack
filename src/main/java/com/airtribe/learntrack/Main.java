@@ -1,22 +1,40 @@
 package com.airtribe.learntrack;
 
-import com.airtribe.learntrack.entity.Student;
-import com.airtribe.learntrack.exception.StudentNotFoundException;
+import com.airtribe.learntrack.component.LearnTrackComponent;
+import com.airtribe.learntrack.handler.CourseHandler;
+import com.airtribe.learntrack.handler.EnrollmentHandler;
+import com.airtribe.learntrack.handler.Handler;
+import com.airtribe.learntrack.handler.StudentHandler;
+import com.airtribe.learntrack.service.CourseService;
+import com.airtribe.learntrack.service.EnrollmentService;
 import com.airtribe.learntrack.service.StudentService;
-import com.airtribe.learntrack.util.IdGenerator;
 
-import java.util.List;
 import java.util.Scanner;
-
-import static com.airtribe.learntrack.handler.CourseHandler.courseManagement;
-import static com.airtribe.learntrack.handler.StudentHandler.studentManagement;
 
 //TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
-public class Main {
+public class  Main {
+    /**
+     * This class is the entry point for the LearnTrack Application.
+     * Lists out all management options.
+     * Dispatches to the right management of corresponding input.
+     *
+     * @param args
+     * @throws InterruptedException
+     */
     public static void main(String[] args) throws InterruptedException {
 
         System.out.println("Welcome to LearnTrack Management System");
+        // Init Component
+        LearnTrackComponent learnTrackComponent = LearnTrackComponent.getInstance();
+        // Init Services
+        StudentService studentService = new StudentService(learnTrackComponent);
+        CourseService courseService = new CourseService(learnTrackComponent);
+        EnrollmentService enrollmentService = new EnrollmentService(learnTrackComponent);
+        // Init Handlers
+        StudentHandler studentHandler = new StudentHandler(studentService);
+        CourseHandler courseHandler = new CourseHandler(courseService);
+        EnrollmentHandler enrollmentHandler = new EnrollmentHandler(enrollmentService, courseService, studentService);
         do{
             System.out.println("Press 1 for Student Management.");
             System.out.println("Press 2 for Course Management.");
@@ -25,23 +43,24 @@ public class Main {
             System.out.print("Please entire your option : ");
             Scanner scanner = new Scanner(System.in);
             String input = scanner.nextLine();
+            Handler handler = null;
 
             if(input.equals("0")){
                 break;
             }
             if(input.equals("1")){
-                studentManagement();
+                handler = studentHandler;
             }
             if(input.equals("2")){
-                courseManagement();
+                handler = courseHandler;
             }
             if(input.equals("3")){
-                //enrollment();
+                handler = enrollmentHandler;
+            }
+            if (handler != null) {
+                handler.start();
             }
         } while(true);
 
     }
-
-
-
 }
